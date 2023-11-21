@@ -24,7 +24,6 @@ public static class Loader
     public static void LoadNetwork(Scene targetScene)
     {
         NetworkManager.Singleton.SceneManager.LoadScene(targetScene.ToString(), LoadSceneMode.Single);
-        Debug.Log(targetScene.ToString());
     }
     public static void LoaderCallback()
     {

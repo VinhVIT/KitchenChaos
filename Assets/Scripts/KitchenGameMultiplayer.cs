@@ -3,11 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class KitchenGameMultiplayer : NetworkBehaviour
 {
-
+    private const int MAX_PLAYER_AMOUNT = 4;
     public static KitchenGameMultiplayer Instance { get; private set; }
+    public event EventHandler OnTryingToJoinGame;
+    public event EventHandler OnFailedToJoinGame;
 
     [SerializeField] private IngredientListSO ingredientListSO;
 
@@ -16,7 +19,7 @@ public class KitchenGameMultiplayer : NetworkBehaviour
     {
         Instance = this;
 
-        DontDestroyOnLoad(gameObject);
+        // DontDestroyOnLoad(gameObject);
     }
     public void StartHost()
     {
@@ -26,21 +29,31 @@ public class KitchenGameMultiplayer : NetworkBehaviour
 
     private void NetworkManager_ConnectionApprovalCallback(NetworkManager.ConnectionApprovalRequest request, NetworkManager.ConnectionApprovalResponse response)
     {   
+        if(SceneManager.GetActiveScene().name != Loader.Scene.CharacterSelectScene.ToString())
+        {
+            response.Approved = false;
+            response.Reason = "Game has already started";
+            return;
+        }
+        if(NetworkManager.Singleton.ConnectedClientsIds.Count >= MAX_PLAYER_AMOUNT){
+            response.Approved = false;
+            response.Reason = "Game is full";
+            return;
+        }
+
         response.Approved = true;
-        // if (GameManager.Instance.IsWaitingToStart())
-        // {
-        //     response.Approved = true;
-        //     response.CreatePlayerObject = true;
-        // }
-        // else
-        // {
-        //     response.Approved = false;
-        // }
     }
 
     public void StartClient()
-    {
+    {   
+        OnTryingToJoinGame?.Invoke(this,EventArgs.Empty);
+        NetworkManager.Singleton.OnClientDisconnectCallback += NetworkManager_OnClientDisconnectCallback;
         NetworkManager.Singleton.StartClient();
+    }
+
+    private void NetworkManager_OnClientDisconnectCallback(ulong clientId)
+    {
+        OnFailedToJoinGame?.Invoke(this,EventArgs.Empty);
     }
 
     public void SpawnIngredient(IngredientSO ingredientSO, IIngredientParent ingredientParent)
