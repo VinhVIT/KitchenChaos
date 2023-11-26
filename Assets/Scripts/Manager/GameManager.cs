@@ -104,7 +104,6 @@ public class GameManager : NetworkBehaviour
     [ServerRpc(RequireOwnership = false)]
     private void SetPlayerReadyServerRpc(ServerRpcParams serverRpcParams = default)
     {
-        Debug.Log(serverRpcParams.Receive.SenderClientId);
         playerReadyDictionary[serverRpcParams.Receive.SenderClientId] = true;
 
         bool allClientId = true;
