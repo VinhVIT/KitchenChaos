@@ -19,7 +19,8 @@ public class GameOverUI : MonoBehaviour
         if (GameManager.Instance.IsGameOver())
         {
             Show();
-            ScoreText.text = ScoreManager.Instance.GetScore().ToString();
+
+            ScoreText.text = DeliveryManager.Instance.GetScorePoint().ToString();
         }
         else
         {

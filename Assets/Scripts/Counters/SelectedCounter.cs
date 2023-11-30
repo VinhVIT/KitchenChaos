@@ -26,9 +26,9 @@ public class SelectedCounter : MonoBehaviour
     //TODO: FIX ERROR WITH SELECTED COUNTER
     private void Player_OnSelectedCounterChanged(object sender, Player.OnSelectedCounterChangedEventArgs e) {
         if (e.selectedCounter == baseCounter) {
-            // Show();
+            Show();
         } else {
-            // Hide();
+            Hide();
         }
     }
 

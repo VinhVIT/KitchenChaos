@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 
-public class ScoreManager : NetworkBehaviour
+public class ScoreManager : MonoBehaviour
 {   
     public static ScoreManager Instance;
     private int currentScore;
@@ -12,15 +12,13 @@ public class ScoreManager : NetworkBehaviour
     {
         Instance = this;
     }
-    [ServerRpc(RequireOwnership = false)]
-    public void AddScoreServerRpc(int amount)
+    public void AddScore(int amount)
     {
         currentScore += amount;
         Debug.Log("added");
     }
 
-    [ServerRpc(RequireOwnership = false)]
-    public void MinusScoreServerRpc(int amount)
+    public void MinusScore(int amount)
     {
         currentScore -= amount;
         if (currentScore < 0)

@@ -31,7 +31,8 @@ public class DeliveryManagerUI : MonoBehaviour
     private void DeliveryManagerUI_OnRecipeCompleted(object sender, EventArgs e)
     {
         UpdateVisual();
-        scoreText.text = ScoreManager.Instance.GetScore().ToString();
+        
+        scoreText.text = DeliveryManager.Instance.GetScorePoint().ToString();
     }
 
     private void DeliveryManagerUI_OnRecipeSpawned(object sender, EventArgs e)

@@ -35,7 +35,7 @@ public class Player : NetworkBehaviour, IIngredientParent
             LocalInstance = this;
         }
 
-        transform.position = spawnPositionList[(int)OwnerClientId];//spawn position for 4 player
+        transform.position = spawnPositionList[KitchenGameMultiplayer.Instance.GetPlayerDataIndexFromClientId(OwnerClientId)];//spawn position for 4 player
 
         OnAnyPlayerSpawned?.Invoke(this, EventArgs.Empty);
 

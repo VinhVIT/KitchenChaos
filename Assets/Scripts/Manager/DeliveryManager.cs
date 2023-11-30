@@ -20,6 +20,7 @@ public class DeliveryManager : NetworkBehaviour
     private float maxSpawnReipeTimer = 5f;
     private float currentWaitingTimer;
     private float maxWaitingTimer = 20f;
+    private int scorePoint = 0;
 
     private void Awake()
     {
@@ -76,8 +77,10 @@ public class DeliveryManager : NetworkBehaviour
     private void RemoveOverTimeRecipeClientRpc()
     {
         currentWaitingTimer = 0f;
+
+        scorePoint -= 100;
         waitingFoodSOList.RemoveAt(0);
-        ScoreManager.Instance.MinusScoreServerRpc(100);
+
         OnRecipeCompleted?.Invoke(this, EventArgs.Empty);
     }
     public void DeliveryRecipe(Plate plate)
@@ -114,7 +117,7 @@ public class DeliveryManager : NetworkBehaviour
                 //Player delivery the correct recipe!!!
                 {
                     DeliveryCorrectRecipeServerRpc(i);
-                    ScoreManager.Instance.AddScoreServerRpc(waitingRecipeSO.score);
+
                     return;
                 }
             }
@@ -145,11 +148,16 @@ public class DeliveryManager : NetworkBehaviour
             currentWaitingTimer = 0f;
         }
 
+        scorePoint += waitingFoodSOList[waitingFoodSOListIndex].score;
         waitingFoodSOList.RemoveAt(waitingFoodSOListIndex);
 
-        ScoreManager.Instance.AddScoreServerRpc(waitingFoodSOList[waitingFoodSOListIndex].score);
+
         OnRecipeCompleted?.Invoke(this, EventArgs.Empty);
         OnRecipeSuccess?.Invoke(this, EventArgs.Empty);
     }
     public List<FoodRecipeSO> GetwaitingFoodSOList() => waitingFoodSOList;
+    public int GetScorePoint()
+    {
+        return scorePoint;
+    }
 }
