@@ -42,8 +42,9 @@ public class CharacterSelectReady : NetworkBehaviour
                 break;
             }
         }
-        if (allClientId)
-        {
+        if (allClientId)//all player ready
+        {   
+            GameLobby.Instance.DeleteLobby();
             Loader.LoadNetwork(Loader.Scene.GameScene);
         }
     }
