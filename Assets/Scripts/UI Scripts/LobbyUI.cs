@@ -74,4 +74,9 @@ public class LobbyUI : MonoBehaviour
             lobbyTransform.GetComponent<LobbyListSingleUI>().SetLobby(lobby);
         }
     }
+    void OnDestroy()
+    {
+        GameLobby.Instance.OnLobbyListChanged -= GameLobby_OnLobbyListChanged;
+        
+    }
 }
