@@ -165,7 +165,7 @@ public class GameManager : NetworkBehaviour
     public bool IsPlaying() => state.Value == State.gamePlaying;
     public bool IsCountdownStart() => state.Value == State.countdownToStart;
     public bool IsGameOver() => state.Value == State.gameOver;
-    public bool IsGamePaused() => playerPausedDictionary.Count > 0;
+
     public bool IsLocalPlayerReady() => isLocalPlayerReady;
     public bool IsWaitingToStart() => state.Value == State.waitingToStart;
     public float GetCountdownToStartTimer() => countdownToStartTimer.Value;

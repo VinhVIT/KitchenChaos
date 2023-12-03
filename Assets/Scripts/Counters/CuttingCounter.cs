@@ -44,7 +44,7 @@ public class CuttingCounter : BaseCounter, IHasProgress
                 //Check if player holding plate
                 {
                     if (plate.TryAddIngredient(GetIngredient().GetIngredientSO()))
-                    {   
+                    {
                         Ingredient.DestroyIngredient(GetIngredient());
                     }
                 }
@@ -84,7 +84,11 @@ public class CuttingCounter : BaseCounter, IHasProgress
     [ServerRpc(RequireOwnership = false)]
     private void CutObjectServerRpc()
     {
-        CutObjectClientRpc();
+        if (HasIngredient() && HasRecipeInput(GetIngredient().GetIngredientSO()))
+        //Has Ingredient here and can cut it 
+        {
+            CutObjectClientRpc();
+        }
     }
     [ClientRpc]
     private void CutObjectClientRpc()
@@ -103,14 +107,17 @@ public class CuttingCounter : BaseCounter, IHasProgress
     }
     [ServerRpc(RequireOwnership = false)]
     private void TestCuttingProgressDoneServerRpc()
-    {   
-        CuttingRecipeSO cuttingRecipeSO = GetCuttingRecipeSOWithInput(GetIngredient().GetIngredientSO());
-        if (cuttingProgress >= cuttingRecipeSO.maxCuttingProgess)
+    {
+        if (HasIngredient() && HasRecipeInput(GetIngredient().GetIngredientSO()))
         {
-            IngredientSO outputIngredientSO = GetOutPutForInput(GetIngredient().GetIngredientSO());
-            Ingredient.DestroyIngredient(GetIngredient());
+            CuttingRecipeSO cuttingRecipeSO = GetCuttingRecipeSOWithInput(GetIngredient().GetIngredientSO());
+            if (cuttingProgress >= cuttingRecipeSO.maxCuttingProgess)
+            {
+                IngredientSO outputIngredientSO = GetOutPutForInput(GetIngredient().GetIngredientSO());
+                Ingredient.DestroyIngredient(GetIngredient());
 
-            Ingredient.SpawnIngredient(outputIngredientSO, this);
+                Ingredient.SpawnIngredient(outputIngredientSO, this);
+            }
         }
     }
     private bool HasRecipeInput(IngredientSO inputIngredientSO)

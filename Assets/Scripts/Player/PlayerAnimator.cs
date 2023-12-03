@@ -16,10 +16,7 @@ public class PlayerAnimator : NetworkBehaviour
     private void Update()
     {
         if (!IsOwner) return;
-        if (!GameManager.Instance.IsGamePaused())
-        {
-            anim.SetBool(IS_WALKING, player.CheckWalking());
-            anim.SetBool(IS_HOLDING, player.HasIngredient());
-        }
+        anim.SetBool(IS_WALKING, player.CheckWalking());
+        anim.SetBool(IS_HOLDING, player.HasIngredient());
     }
 }

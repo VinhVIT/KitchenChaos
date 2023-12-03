@@ -14,7 +14,7 @@ public class KitchenGameMultiplayer : NetworkBehaviour
     private const string PLAYERPREF_PLAYERNAME_MULTIPLAYER = "PlayerNameMultiplayer";
 
     public static KitchenGameMultiplayer Instance { get; private set; }
-
+    public static bool playMultiplayer;
 
     public event EventHandler OnTryingToJoinGame;
     public event EventHandler OnFailedToJoinGame;
@@ -37,6 +37,14 @@ public class KitchenGameMultiplayer : NetworkBehaviour
 
         playerDataNetworkList = new NetworkList<PlayerData>();
         playerDataNetworkList.OnListChanged += PlayerDataNetworkList_OnListChanged;
+    }
+    private void Start()
+    {
+        if (!playMultiplayer)//singleplayer
+        {
+            StartHost();
+            Loader.LoadNetwork(Loader.Scene.GameScene);
+        }
     }
     public string GetPlayerName() => playerName;
     public void SetPlayerName(string newPlayerName)
@@ -115,7 +123,7 @@ public class KitchenGameMultiplayer : NetworkBehaviour
         SetPlayerIdServerRpc(AuthenticationService.Instance.PlayerId);
     }
     [ServerRpc(RequireOwnership = false)]
-    private void SetPlayerNameServerRpc(string playerName,ServerRpcParams serverRpcParams = default)
+    private void SetPlayerNameServerRpc(string playerName, ServerRpcParams serverRpcParams = default)
     {
         int playerDataIndex = GetPlayerDataIndexFromClientId(serverRpcParams.Receive.SenderClientId);
 
@@ -126,7 +134,7 @@ public class KitchenGameMultiplayer : NetworkBehaviour
         playerDataNetworkList[playerDataIndex] = playerData;
     }
     [ServerRpc(RequireOwnership = false)]
-    private void SetPlayerIdServerRpc(string playerId,ServerRpcParams serverRpcParams = default)
+    private void SetPlayerIdServerRpc(string playerId, ServerRpcParams serverRpcParams = default)
     {
         int playerDataIndex = GetPlayerDataIndexFromClientId(serverRpcParams.Receive.SenderClientId);
 
@@ -151,6 +159,14 @@ public class KitchenGameMultiplayer : NetworkBehaviour
     {
         IngredientSO ingredientSO = GetIngredientSOFromIndex(ingredientSOIndex);
 
+        ingredientParentNetworkObjectReference.TryGet(out NetworkObject IngredientParentNetworkObject);
+        IIngredientParent ingredientParent = IngredientParentNetworkObject.GetComponent<IIngredientParent>();
+
+        if (ingredientParent.HasIngredient())//this ingredient already spawned
+        {
+            return;
+        }
+
         Transform ingredientTransform = Instantiate(ingredientSO.prefab);
 
         NetworkObject ingredientNetworkObject = ingredientTransform.GetComponent<NetworkObject>();
@@ -158,8 +174,7 @@ public class KitchenGameMultiplayer : NetworkBehaviour
 
         Ingredient ingredient = ingredientTransform.GetComponent<Ingredient>();
 
-        ingredientParentNetworkObjectReference.TryGet(out NetworkObject IngredientParentNetworkObject);
-        IIngredientParent ingredientParent = IngredientParentNetworkObject.GetComponent<IIngredientParent>();
+
 
         ingredient.SetIngredientParent(ingredientParent);
     }
@@ -184,6 +199,10 @@ public class KitchenGameMultiplayer : NetworkBehaviour
     private void DestroyIngredientServerRpc(NetworkObjectReference ingredientNetworkObjectReference)
     {
         ingredientNetworkObjectReference.TryGet(out NetworkObject ingredientNetworkObject);
+        if (ingredientNetworkObject == null)//this ingredient already destroyed
+        {
+            return;
+        }
         Ingredient Ingredient = ingredientNetworkObject.GetComponent<Ingredient>();
 
         ClearIngredientOnParentClientRpc(ingredientNetworkObjectReference);
