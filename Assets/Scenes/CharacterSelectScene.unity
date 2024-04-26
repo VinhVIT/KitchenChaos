@@ -239,9 +239,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
-        m_MethodName: ReturnMainMenu
+      - m_Target: {fileID: 962253358}
+        m_TargetAssemblyTypeName: CharacterSelectUI, Assembly-CSharp
+        m_MethodName: ReturnMenu
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -644,9 +644,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
-        m_MethodName: RetryGame
+      - m_Target: {fileID: 962253358}
+        m_TargetAssemblyTypeName: CharacterSelectUI, Assembly-CSharp
+        m_MethodName: Retry
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -771,7 +771,7 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 3406982105937070523, guid: 382ed3313788f4a4489becedd4dc5221,
+    - targetCorrespondingSourceObject: {fileID: 1850806404355659194, guid: 382ed3313788f4a4489becedd4dc5221,
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 0}
@@ -2877,7 +2877,7 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 3406982105937070523, guid: 382ed3313788f4a4489becedd4dc5221,
+    - targetCorrespondingSourceObject: {fileID: 1850806404355659194, guid: 382ed3313788f4a4489becedd4dc5221,
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 0}
@@ -3368,7 +3368,7 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 3406982105937070523, guid: 382ed3313788f4a4489becedd4dc5221,
+    - targetCorrespondingSourceObject: {fileID: 1850806404355659194, guid: 382ed3313788f4a4489becedd4dc5221,
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 0}
@@ -3783,7 +3783,7 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 3406982105937070523, guid: 382ed3313788f4a4489becedd4dc5221,
+    - targetCorrespondingSourceObject: {fileID: 1850806404355659194, guid: 382ed3313788f4a4489becedd4dc5221,
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 0}

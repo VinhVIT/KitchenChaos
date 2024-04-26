@@ -13,21 +13,37 @@ public class CharacterSelectUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI lobbyNameText;
     [SerializeField] private TextMeshProUGUI lobbyCodeText;
 
-    private void Awake() {
-        mainMenuButton.onClick.AddListener(() =>{
+    private void Awake()
+    {
+        mainMenuButton.onClick.AddListener(() =>
+        {
             GameLobby.Instance.LeaveLobby();
             NetworkManager.Singleton.Shutdown();
             Loader.Load(Loader.Scene.MainMenuScene);
         });
-        readyButton.onClick.AddListener(() =>{
+        readyButton.onClick.AddListener(() =>
+        {
             CharacterSelectReady.Instance.SetPlayerReady();
         });
     }
-    private void Start() {
+    private void Start()
+    {
         Lobby lobby = GameLobby.Instance.GetLobby();
 
         lobbyNameText.text = "Lobby Name: " + lobby.Name;
         lobbyCodeText.text = "Lobby Code: " + lobby.LobbyCode;
 
+    }
+    public void ReturnMenu()
+    {
+        GameLobby.Instance.LeaveLobby();
+        NetworkManager.Singleton.Shutdown();
+        Loader.Load(Loader.Scene.MainMenuScene);
+    }
+    public void Retry()
+    {   
+        GameLobby.Instance.LeaveLobby();
+        NetworkManager.Singleton.Shutdown();
+        Loader.Load(Loader.Scene.LobbyScene);
     }
 }
